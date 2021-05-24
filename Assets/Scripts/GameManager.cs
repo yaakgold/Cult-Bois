@@ -4,15 +4,28 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    #region Singleton
+    private static GameManager _instance;
 
-    // Update is called once per frame
-    void Update()
+    public static GameManager Instance { get { return _instance; } }
+
+    private void Awake()
     {
-        
+        if (_instance)
+            Destroy(gameObject);
+        else
+        {
+            _instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+    }
+    #endregion
+
+    public int followers, health;
+    public PlayerArea playerArea;
+
+    public void EndTurn()
+    {
+        playerArea.CallActions();
     }
 }

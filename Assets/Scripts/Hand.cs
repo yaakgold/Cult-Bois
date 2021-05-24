@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class Hand : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class Hand : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
 {
     public List<CardObj> cardObjs = new List<CardObj>();
     public GameObject cardPref;
     public float spacing;
+    public Transform canvas;
+    public CardObj currentCardHolding = null;
 
     private Vector3 startPos;
 
@@ -20,6 +22,19 @@ public class Hand : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         DrawCard();
     }
 
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        if(currentCardHolding)
+        {
+            currentCardHolding.OnPointerClick(null);
+            currentCardHolding.transform.SetParent(transform);
+            currentCardHolding.canvasGroup.blocksRaycasts = true;
+            CardPositions();
+
+            currentCardHolding = null;
+        }
+    }
+
     public void OnPointerEnter(PointerEventData eventData)
     {
         transform.position = startPos;
@@ -27,7 +42,7 @@ public class Hand : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y - 80, transform.localPosition.z);
+        transform.position = new Vector3(startPos.x, startPos.y - 80, startPos.z);
     }
 
     public Card DrawCard()
@@ -40,8 +55,10 @@ public class Hand : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         var card = Instantiate(cardPref, transform);
 
         card.GetComponent<CardObj>().SetCard(c);
-        cardObjs.Add(card.GetComponent<CardObj>());
+        card.GetComponent<CardObj>().canvas = canvas;
+        card.GetComponent<CardObj>().hand = this;
 
+        cardObjs.Add(card.GetComponent<CardObj>());
         CardPositions();
 
         return c;
