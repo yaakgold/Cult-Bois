@@ -37,11 +37,7 @@ public class PlayerArea : MonoBehaviour, IPointerClickHandler
 
     public void CallActions()
     {
-        //TODO: Change this system to not use the CallAction class, this should be removed cause it was a bad idea
-        foreach (var c in cardObjs)
-        {
-            CardActions.Instance.CallAction(c.card.cardName);
-        }
+        
     }
 
     public void CardPositions()

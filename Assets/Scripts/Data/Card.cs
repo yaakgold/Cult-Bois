@@ -10,11 +10,45 @@ public class Card : ScriptableObject
     public string cardDesc = ""; //TODO: Figure out what I a doing with this
     public Sprite cardImage = null;
     public int cardCost = 0;
+    public eFollowerType cardFollowerType;
     public eCardType cardType = eCardType.MONSTER;
+
+    [HideInInspector]
+    [SerializeField]
+    public List<CardActionTypes> cardActionTypes;
+
+    [HideInInspector]
+    [SerializeField]
+    public eFollowerType typeOfFollowerForMana;
+}
+
+[System.Serializable]
+public class CardActionTypes
+{
+    [SerializeField]
+    public eActionType actionType;
+    [SerializeField]
+    public float amount;
 }
 
 public enum eCardType
 {
+    FOLLOWER,
     MONSTER,
-    SPELL
+    Instant
+}
+
+public enum eActionType
+{
+    ATTACK,
+    DISCARD,
+    DRAW,
+    TAKE_FOLLOWERS
+}
+
+public enum eFollowerType
+{
+    DEVOUT,
+    BASIC,
+    OTHERS
 }

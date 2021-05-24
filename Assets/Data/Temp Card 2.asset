@@ -16,4 +16,13 @@ MonoBehaviour:
   cardDesc: 
   cardImage: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
   cardCost: 55
-  cardType: 0
+  cardFollowerType: 1
+  cardType: 1
+  cardActionTypes:
+  - actionType: 0
+    amount: 0
+  - actionType: 0
+    amount: 0
+  - actionType: 0
+    amount: 0
+  typeOfFollowerForMana: 0
