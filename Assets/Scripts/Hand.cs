@@ -13,10 +13,15 @@ public class Hand : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, I
 
     private Vector3 startPos;
 
+    [SerializeField]
+    private List<Card> deck;
+
     private void Start()
     {
         startPos = transform.position;
         transform.localPosition = new Vector3(0, transform.localPosition.y - 80, 0);
+
+        deck = GameManager.Instance.GetComponent<Deck>().GetShuffledDeck();
 
         DrawCard();
         DrawCard();
@@ -29,6 +34,7 @@ public class Hand : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, I
             currentCardHolding.OnPointerClick(null);
             currentCardHolding.transform.SetParent(transform);
             currentCardHolding.canvasGroup.blocksRaycasts = true;
+            currentCardHolding.cardState = eCardState.IN_PLAYER_HAND;
             CardPositions();
 
             currentCardHolding = null;
@@ -47,7 +53,7 @@ public class Hand : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, I
 
     public Card DrawCard()
     {
-        Card c = Deck.Instance.TakeTopCard();
+        Card c = Deck.TakeTopCard(ref deck);
 
         if (c == null)
             return null;
@@ -55,7 +61,6 @@ public class Hand : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, I
         var card = Instantiate(cardPref, transform);
 
         card.GetComponent<CardObj>().SetCard(c);
-        card.GetComponent<CardObj>().canvas = canvas;
         card.GetComponent<CardObj>().hand = this;
 
         cardObjs.Add(card.GetComponent<CardObj>());

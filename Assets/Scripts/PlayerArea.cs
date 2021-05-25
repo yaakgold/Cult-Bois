@@ -13,11 +13,9 @@ public class PlayerArea : MonoBehaviour, IPointerClickHandler
     {
         if (hand.currentCardHolding == null)
             return;
-        
-        if (GameManager.Instance.followers < hand.currentCardHolding.card.cardCost)
-            return;
 
-        GameManager.Instance.followers -= hand.currentCardHolding.card.cardCost;
+        //TODO: Add a check for follower stuff
+
         AddCardToPlayArea(hand.currentCardHolding);
     }
 
@@ -26,12 +24,11 @@ public class PlayerArea : MonoBehaviour, IPointerClickHandler
         hand.currentCardHolding = null;
         hand.cardObjs.Remove(card);
 
-        card.cardIsInPlay = true;
+        card.cardState = eCardState.IN_PLAY_AREA;
         card.transform.SetParent(transform);
-        card.canvasGroup.blocksRaycasts = true;
-        card.isFollowingHand = false;
-        card.cardIsInHand = false;
-        cardObjs.Add(card);
+
+        cardObjs.Add(card.GetComponent<CardObj>());
+
         CardPositions();
     }
 

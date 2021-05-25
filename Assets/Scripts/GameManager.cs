@@ -21,9 +21,15 @@ public class GameManager : MonoBehaviour
     }
     #endregion
 
-    public int followers, health;
+    public int health;
     public PlayerArea playerArea;
     public EnemyController enemy;
+
+    //Followers
+    public int basicFollowers;
+
+    //Devout is a wild card follower type
+    public int devoutFollowers;
 
     public void EndTurn()
     {

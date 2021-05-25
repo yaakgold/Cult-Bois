@@ -7,43 +7,27 @@ using TMPro;
 
 public class CardObj : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
 {
-    public Transform canvas;
     public Card card;
     public TMP_Text txtName, txtDesc, txtCost;
     public Image img;
-    public bool cardIsInHand = true;
-    public bool cardIsInPlay = false;
-    public bool isFollowingHand = false;
     public Hand hand;
     public CanvasGroup canvasGroup;
-
-    private Transform startParent;
+    public Canvas canvas;
+    public eCardState cardState = eCardState.IN_PLAYER_HAND;
 
     private void Start()
     {
-        startParent = transform.parent;
+        canvasGroup = GetComponent<CanvasGroup>();
+        canvas = GameObject.FindGameObjectWithTag("Canvas").GetComponent<Canvas>();
     }
 
     private void Update()
     {
-        if (isFollowingHand)
+        //Allow follow mouse
+        if(cardState == eCardState.MOVING_AROUND)
         {
-            if(transform.parent.TryGetComponent(out Hand h))
-            {
-                h.OnPointerExit(null);
-            }
-
-            transform.SetParent(canvas);
-            transform.localScale = Vector3.one;
-            canvasGroup.blocksRaycasts = false;
-
+            transform.SetParent(canvas.transform);
             GetComponent<RectTransform>().anchoredPosition = Input.mousePosition;
-        }
-        else if(transform.parent == null)
-        {
-            transform.SetParent(startParent);
-            startParent.GetComponent<Hand>().CardPositions();
-            canvasGroup.blocksRaycasts = true;
         }
     }
 
@@ -60,16 +44,25 @@ public class CardObj : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        if(cardIsInPlay)
+        switch (cardState)
         {
-
-        }
-        else
-        {
-            isFollowingHand = !isFollowingHand;
-
-            if (hand.currentCardHolding == null)
+            case eCardState.IN_PLAYER_HAND:
+                cardState = eCardState.MOVING_AROUND;
+                canvasGroup.blocksRaycasts = false;
                 hand.currentCardHolding = this;
+                break;
+            case eCardState.MOVING_AROUND:
+                break;
+            case eCardState.IN_PLAY_AREA:
+                break;
+            case eCardState.SELECTING:
+                break;
+            case eCardState.CAN_BE_SELECTED:
+                break;
+            case eCardState.SELECTED:
+                break;
+            default:
+                break;
         }
     }
 
@@ -83,4 +76,14 @@ public class CardObj : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler
     {
         transform.localScale = Vector3.one;
     }
+}
+
+public enum eCardState
+{
+    IN_PLAYER_HAND,
+    MOVING_AROUND,
+    IN_PLAY_AREA,
+    SELECTING,
+    CAN_BE_SELECTED,
+    SELECTED
 }

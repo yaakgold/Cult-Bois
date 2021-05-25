@@ -9,8 +9,13 @@ public class EnemyArea : MonoBehaviour
     public Transform canvas;
     public float spacing, startSpace;
 
+    [SerializeField]
+    private List<Card> deck;
+
     private void Start()
     {
+        deck = GameManager.Instance.GetComponent<Deck>().GetShuffledDeck();
+
         //TODO: Remove this
         CreateCard();
         CreateCard();
@@ -19,7 +24,7 @@ public class EnemyArea : MonoBehaviour
     //Change this to a draw method at some point
     private void CreateCard()
     {
-        Card c = Deck.Instance.cardList[0];
+        Card c = Deck.TakeTopCard(ref deck);
 
         if (c == null)
             return;
@@ -28,6 +33,7 @@ public class EnemyArea : MonoBehaviour
 
         card.GetComponent<CardObj>().SetCard(c);
         card.GetComponent<CardObj>().canvasGroup.blocksRaycasts = false;
+        card.GetComponent<CardObj>().cardState = eCardState.IN_PLAY_AREA;
 
         cardObjs.Add(card.GetComponent<CardObj>());
     }
