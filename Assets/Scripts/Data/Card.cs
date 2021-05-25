@@ -10,6 +10,8 @@ public class Card : ScriptableObject
     public string cardDesc = ""; //TODO: Figure out what I a doing with this
     public Sprite cardImage = null;
     public int cardCost = 0;
+    public int health;
+    public int damage;
     public eFollowerType cardFollowerType;
     public eCardType cardType = eCardType.MONSTER;
 
@@ -35,7 +37,7 @@ public enum eCardType
 {
     FOLLOWER,
     MONSTER,
-    Instant
+    INSTANT
 }
 
 public enum eActionType

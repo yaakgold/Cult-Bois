@@ -37,15 +37,40 @@ public class PlayerArea : MonoBehaviour, IPointerClickHandler
 
     public void CallActions()
     {
-        
+        foreach (var item in cardObjs)
+        {
+            foreach (var action in item.card.cardActionTypes)
+            {
+                switch (action.actionType)
+                {
+                    case eActionType.ATTACK:
+                        GameManager.Instance.enemy.TakeDamage((int)action.amount);
+                        break;
+                    case eActionType.DISCARD:
+                        //Set this up because I need to redo cards
+                        break;
+                    case eActionType.DRAW:
+                        for (int i = 0; i < action.amount; i++)
+                        {
+                            hand.DrawCard();
+                        }
+                        break;
+                    case eActionType.TAKE_FOLLOWERS:
+                        //See discard
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
     }
 
     public void CardPositions()
     {
         for (int i = 0; i < cardObjs.Count; i++)
         {
-            //TODO: Make this not be starting at center, and make all cards move around the center
-            cardObjs[i].gameObject.transform.localPosition = new Vector3(i * spacing - ((cardObjs.Count - 1) * startSpace), 0);
+            var xLoc = i * spacing - ((cardObjs.Count - 1) * startSpace);
+            cardObjs[i].gameObject.transform.localPosition = new Vector3(xLoc, 0);
         }
     }
 }

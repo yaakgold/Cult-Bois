@@ -34,7 +34,8 @@ public class CardEditor : Editor
             case eCardType.MONSTER:
                 LoadInMonsterActions();
                 break;
-            case eCardType.Instant:
+            case eCardType.INSTANT:
+                LoadInMonsterActions();
                 break;
             default:
                 break;
@@ -46,7 +47,7 @@ public class CardEditor : Editor
     private void LoadInMonsterActions()
     {
         EditorGUI.indentLevel = 0;
-        size = EditorGUILayout.IntField("Size", size, new GUILayoutOption[] { });
+        size = EditorGUILayout.IntField("Size", cardActionTypes.arraySize, new GUILayoutOption[] { });
 
         if (size != cardActionTypes.arraySize)
         {
@@ -63,7 +64,7 @@ public class CardEditor : Editor
 
         EditorGUILayout.Space();
         EditorGUILayout.Space();
-
+        
         for (int i = 0; i < cardActionTypes.arraySize; i++)
         {
             EditorGUILayout.Space();
@@ -76,5 +77,6 @@ public class CardEditor : Editor
             EditorGUILayout.PropertyField(amount, new GUILayoutOption[] { });
         }
 
+        serializedObject.ApplyModifiedProperties();
     }
 }

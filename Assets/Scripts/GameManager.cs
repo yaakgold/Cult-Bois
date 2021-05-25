@@ -23,6 +23,7 @@ public class GameManager : MonoBehaviour
 
     public int followers, health;
     public PlayerArea playerArea;
+    public EnemyController enemy;
 
     public void EndTurn()
     {
